@@ -1,25 +1,134 @@
 .calendar-wrapper {
+    max-width: 800px;
+    margin: 40px auto;
+    background-color: #fff;
+    border-radius: 12px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+    padding: 30px 20px;
     text-align: center;
-    padding: 20px;
 }
 
+/* カレンダーテーブル */
 .calendar-table {
     width: 100%;
     border-collapse: collapse;
+    margin-top: 20px;
 }
 
-.calendar-table td,
-.calendar-table th {
+.calendar-table th,
+.calendar-table td {
     width: 14.2%;
     height: 80px;
     border: 1px solid #ddd;
     vertical-align: top;
     text-align: left;
     padding: 6px;
+    font-size: 14px;
 }
 
 .amount {
     color: orange;
     font-size: 14px;
     margin-top: 4px;
+}
+
+/* 今日の日付スタイル */
+.today {
+    background-color: #a1c4fd;
+    color: white;
+    border-radius: 50%;
+    display: inline-block;
+    width: 28px;
+    height: 28px;
+    line-height: 28px;
+    text-align: center;
+    font-weight: bold;
+}
+
+.month-card {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #fff;
+    border-radius: 10px;
+    padding: 0 24px;
+    margin-bottom: 30px;
+    gap: 16px;
+}
+
+/* 左：前月リンク */
+.prev-month {
+    display: flex;
+    align-items: center;
+    color: #737373;
+    text-decoration: none;
+    font-weight: bold;
+    gap: 4px;
+    flex: 1;
+    justify-content: flex-start;
+}
+
+/* 中央：今月 */
+.current-month {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    flex: 1;
+    font-size: 16px;
+    font-weight: bold;
+    color: #333;
+}
+
+/* 右：翌月リンク */
+.next-month {
+    display: flex;
+    align-items: center;
+    color: #737373;
+    text-decoration: none;
+    font-weight: bold;
+    gap: 4px;
+    flex: 1;
+    justify-content: flex-end;
+}
+
+/* アイコン */
+.arrow-icon,
+.calender-icon {
+    width: 18px;
+    height: 18px;
+    opacity: 0.3;
+}
+
+.event-label {
+    font-size: 12px;
+    color: #e91e63;
+    margin-top: 4px;
+    text-align: center;
+}
+
+.day-cell {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 14px;
+    margin-bottom: 4px;
+}
+
+.event-label {
+    font-size: 12px;
+    color: #d33c6b;
+    white-space: nowrap;
+}
+
+.today {
+    background-color: #a1c4fd;
+    color: white;
+    border-radius: 50%;
+    display: inline-block;
+    width: 28px;
+    height: 28px;
+    line-height: 28px;
+    text-align: center;
+    font-weight: bold;
 }

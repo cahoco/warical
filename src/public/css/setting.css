@@ -1,0 +1,55 @@
+.setting-wrapper {
+    max-width: 600px;
+    margin: 40px auto;
+    background-color: #fff;
+    border-radius: 12px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+    padding: 30px 40px;
+}
+
+.setting-title {
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 30px;
+    text-align: center;
+}
+
+.setting-form label {
+    font-weight: bold;
+    margin-bottom: 8px;
+    display: block;
+}
+
+.setting-form input[type="number"] {
+    width: 100%;
+    padding: 10px;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+}
+
+.profile-title {
+    font-size: 24px;
+    font-weight: bold;
+    text-align: center;
+    margin-bottom: 30px;
+    color: #4e67b0;
+}
+
+/* 保存ボタン */
+.save-button {
+    display: block;
+    margin: 0 auto;
+    background: linear-gradient(135deg, #a1c4fd, #c2e9fb);
+    color: white;
+    border: none;
+    padding: 12px 32px;
+    font-weight: bold;
+    font-size: 15px;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background 0.3s ease;
+}
+
+.save-button:hover {
+    opacity: 0.9;
+}

@@ -3,22 +3,27 @@
     position: fixed;
     top: 0;
     width: 100%;
+    height: 60px; /* 高さを固定 */
     background: linear-gradient(90deg, #a1c4fd, #c2e9fb);
     color: white;
-    padding: 20px 0;
-    text-align: center;
-    font-size: 2rem;
-    font-weight: bold;
-    border-bottom: 1px solid #e0e0e0;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 30px;
     z-index: 1001;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
+/* 中央のリンク */
 .header-link {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
     color: white;
     text-decoration: none;
     font-weight: bold;
     font-size: 28px;
+    line-height: 1;
 }
 
 .header-link:hover {
@@ -26,9 +31,38 @@
     color: white;
 }
 
+/* ボタン（設定・旅行モード） */
+.header-button {
+    background-color: transparent;
+    color: white;
+    font-weight: bold;
+    font-size: 14px;
+    border: 1px solid white;
+    padding: 6px 14px;
+    border-radius: 10px;
+    height: 36px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background-color 0.2s ease, opacity 0.2s ease;
+}
+
+.header-button:hover {
+    background-color: rgba(255, 255, 255, 0.15);
+    opacity: 0.9;
+}
+
+.dropdown-toggle::after {
+    vertical-align: middle !important;
+}
+
 /* === ボディ全体 === */
 body {
     padding-top: 80px; /* ← ヘッダー高さ分の余白 */
+    font-family: "Helvetica Neue", sans-serif;
+    background-color: #f9fafc;
+    color: #333;
+    margin: 0;
 }
 
 /* === フッター全体 === */
@@ -39,7 +73,7 @@ body {
     width: 100%;
     background: transparent;
     display: flex;
-    justify-content: flex-end; /* カレンダーは右端に */
+    justify-content: flex-end;
     align-items: center;
     padding: 0 30px;
     z-index: 1000;
@@ -56,8 +90,6 @@ body {
     color: #4e67b0;
     background-clip: padding-box;
     background-image: none;
-    -webkit-background-clip: border-box;
-    -webkit-text-fill-color: #4e67b0;
     transition: transform 0.2s ease;
 }
 
@@ -75,7 +107,6 @@ body {
     text-align: center;
     line-height: 96px;
     font-size: 16px;
-    pointer-events: auto;
 }
 
 /* ホバー時にふわっと浮く */
@@ -85,7 +116,6 @@ body {
 
 /* === カレンダーボタン（右端） === */
 .footer-btn.calendar {
-    pointer-events: auto;
     padding: 10px 20px;
     border: 2px solid #4e67b0;
     border-radius: 6px;

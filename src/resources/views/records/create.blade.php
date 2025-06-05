@@ -6,14 +6,16 @@
 
 @section('content')
 <div class="main-wrapper">
-    <h2 style="text-align: center;">支出の登録</h2>
+    <h2 class="profile-title">支出の登録</h2>
 
     @php
-        $members = ['Aさん', 'Bさん'];
-        $categories = ['食費', '交通費', '日用品', '娯楽', '交際費'];
+        $memberNames = [
+            'A' => $profile->a_name ?? 'Aさん',
+            'B' => $profile->b_name ?? 'Bさん',
+        ];
     @endphp
 
-    <form method="POST" action="{{ route('expenses.store') }}">
+    <form method="POST" action="{{ route('expenses.store') }}" id="expense-form">
         @csrf
 
         <!-- 日付 -->
@@ -22,15 +24,15 @@
             <input type="date" name="date" class="form-control" value="{{ \Carbon\Carbon::today()->format('Y-m-d') }}">
         </div>
 
-        <!-- 支払者（ボタン選択） -->
+        <!-- 支払者 -->
         <div class="mb-3">
             <label>誰が支払いましたか？</label>
             <div class="payer-radio-group">
-                @foreach ($members as $member)
+                @foreach ($memberNames as $key => $name)
                     <label class="payer-radio-wrapper">
-                        <input type="radio" name="payer" value="{{ $member }}">
+                        <input type="radio" name="payer" value="{{ $name }}">
                         <span class="custom-radio"></span>
-                        {{ $member }}
+                        {{ $name }}
                     </label>
                 @endforeach
             </div>
@@ -39,16 +41,16 @@
         <!-- 合計金額 -->
         <div class="mb-3">
             <label>合計金額</label>
-            <input type="number" name="amount" class="form-control">
+            <input type="number" name="amount" id="total_amount" class="form-control">
         </div>
 
         <!-- カテゴリー -->
         <div class="mb-3">
             <label>カテゴリー</label>
-            <select name="category" class="form-control">
+            <select name="category" class="form-control" required>
                 <option value="">選択してください</option>
                 @foreach ($categories as $category)
-                    <option value="{{ $category }}">{{ $category }}</option>
+                    <option value="{{ $category->name }}">{{ $category->name }}</option>
                 @endforeach
             </select>
         </div>
@@ -58,7 +60,7 @@
             <label>割り方</label>
             <div class="radio-group">
                 <label class="radio-wrapper">
-                    <input type="radio" name="split_type" value="equal" checked>
+                    <input type="radio" name="split_type" value="equal">
                     <span class="custom-radio"></span>
                     ぴったり割り勘
                 </label>
@@ -70,7 +72,7 @@
                 </label>
 
                 <label class="radio-wrapper">
-                    <input type="radio" name="split_type" value="percentage">
+                    <input type="radio" name="split_type" value="percentage" checked>
                     <span class="custom-radio"></span>
                     割合で分担
                 </label>
@@ -81,55 +83,40 @@
         <div id="custom-fields" class="mb-3" style="display: none;">
             <label>各メンバーの金額</label>
             <div class="mb-2">
-                <label>Aさん</label>
-                <input type="number" name="amounts[Aさん]" id="amount_a" class="form-control">
+                <label>{{ $memberNames['A'] }}</label>
+                <input type="number" name="amounts[{{ $memberNames['A'] }}]" id="amount_a" class="form-control">
             </div>
             <div class="mb-2">
-                <label>Bさん</label>
-                <input type="number" name="amounts[Bさん]" id="amount_b" class="form-control">
+                <label>{{ $memberNames['B'] }}</label>
+                <input type="number" name="amounts[{{ $memberNames['B'] }}]" id="amount_b" class="form-control">
             </div>
         </div>
 
         <!-- 割合入力 -->
-        <div id="percentage-fields" class="mb-3" style="display: none;">
+        <div id="percentage-fields" class="mb-3">
             <label>各メンバーの割合（%）</label>
             <div class="mb-2">
-                <label>Aさん</label>
-                <select name="percentages[Aさん]" id="percent_a" class="form-control">
-                    <option value="">--</option>
+                <label>{{ $memberNames['A'] }}</label>
+                <select name="percentages[{{ $memberNames['A'] }}]" id="percent_a" class="form-control">
                     @for ($i = 0; $i <= 100; $i += 10)
-                        <option value="{{ $i }}" {{ $i == 50 ? 'selected' : '' }}>{{ $i }}%</option>
+                        <option value="{{ $i }}" {{ $i == $setting->a_share ? 'selected' : '' }}>{{ $i }}%</option>
                     @endfor
                 </select>
             </div>
             <div class="mb-2">
-                <label>Bさん</label>
-                <select name="percentages[Bさん]" id="percent_b" class="form-control">
-                    <option value="">--</option>
+                <label>{{ $memberNames['B'] }}</label>
+                <select name="percentages[{{ $memberNames['B'] }}]" id="percent_b" class="form-control">
                     @for ($i = 0; $i <= 100; $i += 10)
-                        <option value="{{ $i }}" {{ $i == 50 ? 'selected' : '' }}>{{ $i }}%</option>
+                        <option value="{{ $i }}" {{ $i == $setting->b_share ? 'selected' : '' }}>{{ $i }}%</option>
                     @endfor
                 </select>
             </div>
 
             <div class="mt-3">
                 <label>自動計算された金額</label>
-                <input type="text" id="amount_a_result" class="form-control mb-2" readonly>
-                <input type="text" id="amount_b_result" class="form-control" readonly>
+                    <input type="text" id="amount_a_result" class="form-control mb-2" readonly data-name="{{ $memberNames['A'] }}">
+                    <input type="text" id="amount_b_result" class="form-control" readonly data-name="{{ $memberNames['B'] }}">
             </div>
-        </div>
-
-        <!-- 登録ボタン -->
-        <div class="mt-4">
-            <button type="submit" class="btn btn-primary w-100">登録する</button>
-        </div>
-
-        <!-- 一覧に戻るボタン -->
-        <div class="mt-4" style="text-align: center;">
-            <a href="{{ route('expenses.index') }}">
-                <button type="button" class="btn btn-secondary">一覧に戻る</button>
-            </a>
-        </div>
 
     </form>
 </div>
@@ -152,6 +139,7 @@ document.addEventListener('DOMContentLoaded', function () {
         const selected = document.querySelector('input[name="split_type"]:checked').value;
         customFields.style.display = (selected === 'custom') ? 'block' : 'none';
         percentageFields.style.display = (selected === 'percentage') ? 'block' : 'none';
+        if (selected === 'percentage') updatePercentages();
     }
 
     function updateCustomAmounts(changedBy) {
@@ -178,21 +166,22 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     }
 
-    function updatePercentages(changedBy) {
+    function updatePercentages(changedBy = null) {
         const total = parseInt(totalInput.value) || 0;
-        const aPercent = parseInt(percentA.value);
-        const bPercent = parseInt(percentB.value);
+        let aPercent = parseInt(percentA.value) || 0;
+        let bPercent = parseInt(percentB.value) || 0;
 
-        if (changedBy === 'a' && !isNaN(aPercent)) {
-            percentB.value = Math.max(0, 100 - aPercent);
-        } else if (changedBy === 'b' && !isNaN(bPercent)) {
-            percentA.value = Math.max(0, 100 - bPercent);
+        if (changedBy === 'a') {
+            percentB.value = 100 - aPercent;
+        } else if (changedBy === 'b') {
+            percentA.value = 100 - bPercent;
         }
 
-        const finalA = parseInt(percentA.value) || 0;
-        const finalB = 100 - finalA;
-        amountAResult.value = 'Aさん：\u00a5' + Math.floor((finalA / 100) * total);
-        amountBResult.value = 'Bさん：\u00a5' + Math.floor((finalB / 100) * total);
+        aPercent = parseInt(percentA.value) || 0;
+        bPercent = 100 - aPercent;
+
+        amountAResult.value = amountAResult.dataset.name + '：¥' + Math.floor((aPercent / 100) * total);
+        amountBResult.value = amountBResult.dataset.name + '：¥' + Math.floor((bPercent / 100) * total);
     }
 
     radios.forEach(r => r.addEventListener('change', updateView));
@@ -208,4 +197,13 @@ document.addEventListener('DOMContentLoaded', function () {
     percentB.addEventListener('change', () => updatePercentages('b'));
 });
 </script>
+@endsection
+
+@section('footer')
+<div class="fixed-footer">
+    <div class="footer-right">
+        <a href="{{ route('expenses.index') }}" class="footer-btn calendar">一覧に戻る</a>
+    </div>
+    <button type="submit" form="expense-form" class="footer-btn input">登録</button>
+</div>
 @endsection
