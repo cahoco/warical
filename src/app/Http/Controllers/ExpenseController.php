@@ -94,7 +94,7 @@ class ExpenseController extends Controller
         }
 
         // 🔽 カテゴリー一覧を取得
-        $categories = Category::all();
+        $categories = Category::orderBy('sort_order')->get();
 
         // Bladeに渡す
         return view('records.create', compact('profile', 'setting', 'categories'));

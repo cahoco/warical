@@ -28,4 +28,14 @@ class CategoryController extends Controller
         Category::findOrFail($id)->delete();
         return redirect()->route('categories.index')->with('success', 'カテゴリを削除しました。');
     }
+
+    public function update(Request $request, $id)
+    {
+        $request->validate(['name' => 'required|string']);
+        $category = Category::findOrFail($id);
+        $category->update(['name' => $request->name]);
+
+        return redirect()->route('categories.index')->with('success', 'カテゴリを更新しました。');
+    }
+
 }
