@@ -2,17 +2,14 @@
 
 use Illuminate\Support\Facades\Route;
 
-/*
-|--------------------------------------------------------------------------
-| Web Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register web routes for your application. These
-| routes are loaded by the RouteServiceProvider within a group which
-| contains the "web" middleware group. Now create something great!
-|
-*/
+use App\Http\Controllers\RecordController;
+use App\Http\Controllers\ExpenseController;
+use App\Http\Controllers\MemoController;
+use App\Http\Controllers\CalendarController;
 
-Route::get('/', function () {
-    return view('welcome');
-});
+Route::get('/records/create', [RecordController::class, 'create'])->name('records.create');
+Route::post('/expenses', [ExpenseController::class, 'store'])->name('expenses.store');
+Route::get('/', [ExpenseController::class, 'index'])->name('expenses.index');
+Route::post('/memo', [MemoController::class, 'store'])->name('memo.store');
+Route::post('/memo/auto-save', [MemoController::class, 'autoSave'])->name('memo.autoSave');
+Route::get('/calendar', [CalendarController::class, 'index'])->name('calendar.index');

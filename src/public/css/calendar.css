@@ -1,0 +1,25 @@
+.calendar-wrapper {
+    text-align: center;
+    padding: 20px;
+}
+
+.calendar-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.calendar-table td,
+.calendar-table th {
+    width: 14.2%;
+    height: 80px;
+    border: 1px solid #ddd;
+    vertical-align: top;
+    text-align: left;
+    padding: 6px;
+}
+
+.amount {
+    color: orange;
+    font-size: 14px;
+    margin-top: 4px;
+}
